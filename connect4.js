@@ -19,6 +19,7 @@ class Game {
     this.makeHtmlBoard();
   }
 
+  /** Creates an empty board */
   makeBoard() {
     for (let y = 0; y < this.height; y++) {
       this.board.push(Array.from({ length: this.width }));
@@ -44,7 +45,7 @@ class Game {
 
     board.append(top);
 
-    // make main part of board
+    // make main part of board to create table rows and cells with appropriate ID
     for (let y = 0; y < this.height; y++) {
       const row = document.createElement("tr");
 
@@ -89,9 +90,7 @@ class Game {
 
   /** handleClick: handle click of column top to play piece */
 
-  //PAUSED HERE SWITCHING NOW
-  // Relook at this part for reference for this
-  handleClick(evt) {
+    handleClick(evt) {
     // get x from ID of clicked cell
     const x = +evt.target.id;
 
@@ -125,7 +124,6 @@ class Game {
       // Check four cells to see if they're all color of current player
       //  - cells: list of four (y, x) cells
       //  - returns true if all are legal coordinates & all match currPlayer
-      // COME BACK TO THIS SECTION LATER IN CASE WE NEED TO
       return cells.every(
         ([y, x]) =>
           y >= 0 &&
