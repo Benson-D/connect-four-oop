@@ -18,6 +18,7 @@ class Game {
     this.handleClick = this.handleClick.bind(this);
     this.makeBoard();
     this.makeHtmlBoard();
+    this.gameOver = false;
   }
 
   /** Creates an empty board */
@@ -93,8 +94,11 @@ class Game {
   /** handleClick: handle click of column top to play piece */
 
   handleClick(evt) {
-    console.log("handleClick", this);
+    // console.log("handleClick", this);
     // get x from ID of clicked cell
+    if (this.gameOver) {
+      return;
+    }
     const x = +evt.target.id;
 
     //TOFIX: couldn't locate this.findSpotForCol, but needed to establish this.handleclick before makehtmlboard function.
@@ -112,12 +116,14 @@ class Game {
 
     // check for win
     if (this.checkForWin()) {
+      this.gameOver = true;
       return this.endGame(`Player ${this.currPlayer} won!`);
     }
 
     // check for tie
     // Update to only the top row to check
     if (this.board.every((row) => row.every((cell) => cell))) {
+      this.gameOver = true;
       return this.endGame("Tie!");
     }
 
