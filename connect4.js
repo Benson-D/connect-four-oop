@@ -13,11 +13,11 @@ class Game {
   constructor(height = 6, width = 7) {
     this.height = height;
     this.width = width;
-    // this.board = [] could be here if we want to 
+    // this.board = [] could be here if we want to
     this.currPlayer = 1; // active player: 1 or 2
+    this.handleClick = this.handleClick.bind(this);
     this.makeBoard();
     this.makeHtmlBoard();
-    this.handleClick = this.handleClick.bind(this);
   }
 
   /** Creates an empty board */
@@ -62,7 +62,7 @@ class Game {
   }
 
   /** findSpotForCol: given column x, return top empty y (null if filled) */
-  
+
   findSpotForCol(x) {
     for (let y = this.height - 1; y >= 0; y--) {
       if (!this.board[y][x]) {
@@ -92,12 +92,16 @@ class Game {
 
   /** handleClick: handle click of column top to play piece */
 
-    handleClick(evt) {
+  handleClick(evt) {
+    console.log("handleClick", this);
     // get x from ID of clicked cell
     const x = +evt.target.id;
 
+    //TOFIX: couldn't locate this.findSpotForCol, but needed to establish this.handleclick before makehtmlboard function.
+
     // get next spot in column (if none, ignore click)
     const y = this.findSpotForCol(x);
+
     if (y === null) {
       return;
     }
@@ -135,8 +139,8 @@ class Game {
           x < this.width &&
           this.board[y][x] === this.currPlayer
       );
-    }
-  
+    };
+
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
         // get "check list" of 4 cells (starting here) for each of the different
@@ -165,7 +169,7 @@ class Game {
           [y + 2, x - 2],
           [y + 3, x - 3],
         ];
-  
+
         // find winner (only checking each win-possibility as needed)
         if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
           return true;
@@ -175,4 +179,7 @@ class Game {
   }
 }
 
-const app = new Game(6,7);
+const startGame = document.getElementById("play-game");
+startGame.addEventListener("click", function () {
+  new Game();
+});
