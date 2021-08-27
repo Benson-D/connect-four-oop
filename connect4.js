@@ -10,17 +10,19 @@
 //  const HEIGHT = 6;
 
 class Game {
-  constructor(height, width) {
+  constructor(height = 6, width = 7) {
     this.height = height;
     this.width = width;
-    this.board = []; // array of rows, each row is array of cells  (board[y][x]
+    // this.board = [] could be here if we want to 
     this.currPlayer = 1; // active player: 1 or 2
     this.makeBoard();
     this.makeHtmlBoard();
+    this.handleClick = this.handleClick.bind(this);
   }
 
   /** Creates an empty board */
   makeBoard() {
+    this.board = []; // array of rows, each row is array of cells  (board[y][x])
     for (let y = 0; y < this.height; y++) {
       this.board.push(Array.from({ length: this.width }));
     }
@@ -34,8 +36,8 @@ class Game {
     const top = document.createElement("tr");
     top.setAttribute("id", "column-top");
 
-    // COME BACK HERE. DO WE NEED TO BIND IN A SEPARTE LINE?
-    top.addEventListener("click", this.handleClick.bind(this));
+    // COME BACK HERE. DO WE NEED TO BIND IN A SEPARTE LINE? Can bind this in the constructor
+    top.addEventListener("click", this.handleClick);
 
     for (let x = 0; x < this.width; x++) {
       const headCell = document.createElement("td");
@@ -60,7 +62,7 @@ class Game {
   }
 
   /** findSpotForCol: given column x, return top empty y (null if filled) */
-
+  
   findSpotForCol(x) {
     for (let y = this.height - 1; y >= 0; y--) {
       if (!this.board[y][x]) {
@@ -110,6 +112,7 @@ class Game {
     }
 
     // check for tie
+    // Update to only the top row to check
     if (this.board.every((row) => row.every((cell) => cell))) {
       return this.endGame("Tie!");
     }
